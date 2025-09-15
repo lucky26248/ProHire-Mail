@@ -1,15 +1,19 @@
 package ProHire.Mail.utils;
 
 import ProHire.Mail.entity.JobProfile;
+import ProHire.Mail.templates.TemplateProcessor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Objects;
 
 @Service
 public class MailTemplatesService {
+
+    @Autowired
+    private TemplateProcessor templateProcessor;
 
     public String loadTemplate(String filename) throws IOException {
         // Classpath resource including package structure
@@ -21,19 +25,7 @@ public class MailTemplatesService {
 
     public String apply(JobProfile jobProfile) throws IOException {
         String template = loadTemplate("apply-template.html");
-
-        return template
-                .replace("{{name}}", safe(jobProfile.getName()))
-                .replace("{{email}}", safe(jobProfile.getEmail()))
-                .replace("{{github}}", safe(jobProfile.getGithub()))
-                .replace("{{leetcode}}", safe(jobProfile.getLeetcode()))
-                .replace("{{linkedin}}", safe(jobProfile.getLinkedin()))
-                .replace("{{portfolio}}", safe(jobProfile.getPortfolio()))
-                .replace("{{resume}}", safe(jobProfile.getResume()))
-                .replace("{{description}}", safe(jobProfile.getDescription()));
+        return templateProcessor.processTemplate(template , jobProfile);
     }
 
-    private String safe(String value) {
-        return Objects.toString(value, "");
-    }
 }
