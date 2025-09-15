@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Candidate Profile</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f4f6f8;
+      font-family: Arial, sans-serif;
+      color: #333;
+    }
+
+    table {
+      border-collapse: collapse;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #2563eb, #1e3a8a);
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      font-size: 22px;
+    }
+
+    .content {
+      padding: 20px;
+    }
+
+    .summary {
+      background: #f0f4ff;
+      border-left: 4px solid #2563eb;
+      border-radius: 5px;
+      padding: 14px;
+      font-size: 15px;
+      color: #1e3a8a;
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+
+    .highlight {
+      background: #fffbea;
+      border: 1px solid #facc15;
+      border-radius: 5px;
+      padding: 12px;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-top: 12px;
+    }
+
+    .footer {
+      background: #f1f5f9;
+      padding: 15px;
+      text-align: center;
+      font-size: 13px;
+      color: #555;
+    }
+
+    a.btn {
+      display: inline-block;
+      text-align: center;
+      font-family: Arial, sans-serif;
+      color: #fff;
+      text-decoration: none;
+      font-size: 14px;
+      border-radius: 5px;
+      background: #2563eb;
+      padding: 12px 0;
+      width: 300px;
+    }
+
+    a.btn img {
+      vertical-align: middle;
+      margin-right: 6px;
+      display: inline-block;
+    }
+
+    .view-profile a {
+      width: 300px;
+      display: inline-block;
+      padding: 12px 0;
+      font-size: 15px;
+      text-align: center;
+    }
+
+    @media only screen and (max-width:750px) {
+
+      a.btn {
+        width: 150px;
+      }
+
+      .view-profile a {
+        width: 150px;
+        padding: 8px 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td align="center">
+        <table class="container" width="600" cellpadding="0" cellspacing="0" border="0">
+          <!-- Header -->
+          <tr>
+            <td class="header">Candidate Profile</td>
+          </tr>
+
+          <!-- Content -->
+          <tr>
+            <td class="content">
+              <!-- Summary -->
+              <div class="summary">
+                Hello, I'm <strong>{{name}}</strong>.<br>
+                I'm excited to explore opportunities where I can contribute meaningfully and continue to grow.<br>
+                I would be grateful if you could consider me for any suitable openings or a referral.<br><br>
+                Below, you'll find my profile details, with my resume attached for your review.
+              </div>
+
+              <!-- Buttons: Table layout -->
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td align="center" style="padding:5px;">
+                    <a href="mailto:{{email}}" class="btn">
+                      <img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" width="16" height="16"
+                        alt="Email"> Email
+                    </a>
+                  </td>
+                  <td align="center" style="padding:5px;">
+                    <a href="{{github}}" class="btn">
+                      <img src="https://cdn-icons-png.flaticon.com/512/733/733553.png" width="16" height="16"
+                        alt="GitHub"> GitHub
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center" style="padding:5px;">
+                    <a href="{{leetcode}}" class="btn">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/LeetCode_logo_black.png" width="16"
+                        height="16" alt="LeetCode"> LeetCode
+                    </a>
+                  </td>
+                  <td align="center" style="padding:5px;">
+                    <a href="{{linkedin}}" class="btn">
+                      <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" width="16" height="16"
+                        alt="LinkedIn"> LinkedIn
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center" style="padding:5px;">
+                    <a href="{{portfolio}}" class="btn" style="border-radius:5px;">
+                      <img src="https://avatars.githubusercontent.com/u/73424882?s=400" width="20" height="20"
+                        alt="Portfolio" style="border-radius:50%;"> AI Portfolio – SelfSens.ai
+                    </a>
+                  </td>
+                  <td align="center" style="padding:5px;">
+                    <a href="{{resume}}" class="btn">
+                      <img src="https://cdn-icons-png.flaticon.com/512/337/337946.png" width="16" height="16"
+                        alt="Resume"> Resume
+                    </a>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Description -->
+              <!-- Wrapper div for rounded corners -->
+              <div style="background:#fffbea; border:1px solid #f3e6ae; border-radius:5px; padding:0; margin-top:12px;">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+                  <tr>
+                    <td style="padding:12px; font-size:14px; line-height:1.5;">
+                      <strong>Description:</strong><br>{{description}}
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
+
+              <!-- View Full Profile -->
+              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:20px;">
+                <tr>
+                  <td align="center">
+                    <a href="{{portfolio}}" class="view-profile btn" style="border-radius:5px;">View Full Profile</a>
+                  </td>
+                </tr>
+              </table>
+
+            </td>
+          </tr>
+
+
+          <!-- Footer -->
+          <tr>
+            <td align="center">
+              <div style="background:#e1e3e7; color:#000000; 
+                       border-bottom-left-radius:5px; 
+                       border-bottom-right-radius:5px; 
+                       padding:15px; text-align:center; font-size:14px;">
+                Best Regards,<br>
+                <strong>{{name}}</strong>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+
+</html>

@@ -24,6 +24,8 @@ public class JobProfile {
     private String resume;
     private String portfolio;
     private String subject;
+
+    @Column(columnDefinition = "TEXT")
     private String description;
     private String resumePath;
 

@@ -25,8 +25,8 @@ public class MailDetailsController {
         return new ResponseEntity<>(createdMailDetails , HttpStatus.CREATED);
     }
 
-    @DeleteMapping
-    public ResponseEntity<HttpStatus> deleteMailDetails(@RequestParam long mailId){
+    @DeleteMapping("/{mailId}")
+    public ResponseEntity<HttpStatus> deleteMailDetails(@PathVariable long mailId){
         deleteService.deleteMailDetails(mailId);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }

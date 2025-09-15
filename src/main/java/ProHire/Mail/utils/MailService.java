@@ -16,7 +16,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Objects;
@@ -30,6 +30,9 @@ public class MailService {
 
     @Autowired
     private MailDetailsRepo mailDetailsRepo;
+
+    @Autowired
+    private MailTemplatesService mailTemplatesService;
 
     // Send mails for all users
     public ResponseEntity<HttpStatus> executeMailSendingEachUser() {
@@ -62,7 +65,7 @@ public class MailService {
                 sendMail(senderMailDetails.get(currentIdx), mail);
                 currentIdx = (currentIdx + 1) % senderMailDetails.size();
 
-                mail.setTotalMailSendCount(mail.getTotalMailSendCount() + 1);
+//                mail.setTotalMailSendCount(mail.getTotalMailSendCount() + 1);
                 mailDetailsRepo.save(mail);
 
             } catch (Exception e) {
@@ -72,54 +75,32 @@ public class MailService {
     }
 
      //Send a single mail using given sender
-    private static void sendMail(SenderMailDetails senderMailDetails, MailDetails mailDetails)
-            throws MessagingException, UnsupportedEncodingException {
+    private  void sendMail(SenderMailDetails senderMailDetails, MailDetails mailDetails)
+            throws MessagingException, IOException {
 
         System.out.println("Mail sent from " + senderMailDetails.getSenderMail() + " to " +mailDetails.getMail());
 
-//        JavaMailSender javaMailSender = getJavaMailSender(senderMailDetails);
-//        JobProfile jobProfile = mailDetails.getJobProfiles();
-//
-//        MimeMessage message = javaMailSender.createMimeMessage();
-//        MimeMessageHelper helper = new MimeMessageHelper(message, true);
-//
-//        // Display name fallback
-//        String displayName = senderMailDetails.getSenderName() != null
-//                ? senderMailDetails.getSenderName()
-//                : "ProHire Mail Service";
-//
-//        helper.setFrom(senderMailDetails.getSenderMail(), displayName);
-//        helper.setTo(mailDetails.getMail());
-//        helper.setSubject(safe(jobProfile.getSubject()));
-//
-//        // HTML body
-//        String body = """
-//                <html>
-//                <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-//                    <h2 style="color:#2C3E50;">Candidate Profile: %s</h2>
-//                    <p><strong>Email:</strong> %s</p>
-//                    <p><strong>GitHub:</strong> <a href="%s">%s</a></p>
-//                    <p><strong>LeetCode:</strong> <a href="%s">%s</a></p>
-//                    <p><strong>LinkedIn:</strong> <a href="%s">%s</a></p>
-//                    <p><strong>Portfolio:</strong> <a href="%s">%s</a></p>
-//                    <p><strong>Description:</strong><br/>%s</p>
-//                    <br/>
-//                    <p>Best Regards,<br/>ProHire Mail Service</p>
-//                </body>
-//                </html>
-//                """.formatted(
-//                safe(jobProfile.getName()),
-//                safe(jobProfile.getEmail()),
-//                safe(jobProfile.getGithub()), safe(jobProfile.getGithub()),
-//                safe(jobProfile.getLeetcode()), safe(jobProfile.getLeetcode()),
-//                safe(jobProfile.getLinkedin()), safe(jobProfile.getLinkedin()),
-//                safe(jobProfile.getPortfolio()), safe(jobProfile.getPortfolio()),
-//                safe(jobProfile.getDescription())
-//        );
-//
-//        helper.setText(body, true);
-//
-//        // Resume attachment
+        JavaMailSender javaMailSender = getJavaMailSender(senderMailDetails);
+        JobProfile jobProfile = mailDetails.getJobProfiles();
+
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, false);
+
+        // Display name fallback
+        String displayName = senderMailDetails.getSenderName() != null
+                ? senderMailDetails.getSenderName()
+                : "ProHire Mail Service";
+
+        helper.setFrom(senderMailDetails.getSenderMail(), displayName);
+        helper.setTo(mailDetails.getMail());
+        helper.setSubject(safe(jobProfile.getSubject()));
+
+        // HTML body
+        String body = mailTemplatesService.apply(jobProfile);
+
+        helper.setText(body, true);
+
+        // Resume attachment
 //        if (jobProfile.getResumePath() != null) {
 //            File resumeFile = new File(jobProfile.getResumePath());
 //            if (resumeFile.exists()) {
@@ -127,8 +108,8 @@ public class MailService {
 //                helper.addAttachment(filename, resumeFile);
 //            }
 //        }
-//
-//        javaMailSender.send(message);
+
+        javaMailSender.send(message);
     }
 
     // Build mail sender dynamically from sender details
@@ -138,6 +119,7 @@ public class MailService {
         mailSender.setPort(587);
         mailSender.setUsername(senderMailDetails.getSenderMail());
         mailSender.setPassword(senderMailDetails.getPassword()); // Gmail App Password
+        System.out.println("mail password: " + senderMailDetails.getPassword());
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
@@ -147,7 +129,6 @@ public class MailService {
 
         return mailSender;
     }
-
 
     //Helper for null-safety
     private static String safe(String value) {

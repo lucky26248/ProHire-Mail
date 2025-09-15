@@ -1,7 +1,7 @@
 package ProHire.Mail.controller;
 
-import ProHire.Mail.Repo.UserRepo;
 import ProHire.Mail.entity.User;
+import ProHire.Mail.services.DeleteService;
 import ProHire.Mail.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +17,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private DeleteService deleteService;
+
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user){
         User createdUser = userService.createUser(user);
@@ -24,8 +27,19 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getUser(){
+    public ResponseEntity<List<User>> getUsers(){
         List<User>  users = userService.getUsers();
         return new ResponseEntity<>(users , HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/{username}")
+    public ResponseEntity<User> getUser(@PathVariable String username){
+        return new ResponseEntity<>(userService.getUser(username) , HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{username}")
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable String username){
+        deleteService.deleteUser(username);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 }

@@ -25,9 +25,10 @@ public class JobProfileController {
         return new ResponseEntity<>(createdJobProfile , HttpStatus.CREATED);
     }
 
-    @DeleteMapping
-    public ResponseEntity<HttpStatus> deleteJobProfile(@RequestParam long profileId){
+    @DeleteMapping("/{profileId}")
+    public ResponseEntity<HttpStatus> deleteJobProfile(@PathVariable long profileId) {
         deleteService.deleteJobProfile(profileId);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
+
 }

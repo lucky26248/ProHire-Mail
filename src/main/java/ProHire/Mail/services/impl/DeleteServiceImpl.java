@@ -3,6 +3,7 @@ package ProHire.Mail.services.impl;
 import ProHire.Mail.Repo.JobProfileRepo;
 import ProHire.Mail.Repo.MailDetailsRepo;
 import ProHire.Mail.Repo.SenderMailDetailsRepo;
+import ProHire.Mail.Repo.UserRepo;
 import ProHire.Mail.services.DeleteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,14 @@ public class DeleteServiceImpl implements DeleteService {
 
     @Autowired
     private JobProfileRepo jobProfileRepo;
+
+    @Autowired
+    private UserRepo userRepo;
+
+    @Override
+    public void deleteUser(String username) {
+        userRepo.deleteById(username);
+    }
 
     @Override
     public void deleteMailDetails(Long mailId) {
