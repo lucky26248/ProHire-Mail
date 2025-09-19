@@ -37,6 +37,10 @@ public class MailService {
     public ResponseEntity<HttpStatus> executeMailSendingEachUser() {
         List<User> users = userService.getUsers();
         for (User user : users) {
+            if (!user.isActive()) {
+                System.out.println("user skipped due to inactive: " + user.getUsername());
+                continue; //skip inactive user
+            }
             try {
                 processUserMail(user);
             } catch (Exception e) {
@@ -64,7 +68,7 @@ public class MailService {
                 sendMail(senderMailDetails.get(currentIdx), mail);
                 currentIdx = (currentIdx + 1) % senderMailDetails.size();
 
-//                mail.setTotalMailSendCount(mail.getTotalMailSendCount() + 1);
+                mail.setTotalMailSendCount(mail.getTotalMailSendCount() + 1);
                 mailDetailsRepo.save(mail);
 
             } catch (Exception e) {

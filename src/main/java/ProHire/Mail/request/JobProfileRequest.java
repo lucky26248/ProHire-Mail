@@ -18,5 +18,7 @@ public class JobProfileRequest {
     private String subject;
     private String description;
     private String resumePath;
+    private int htmlTemplateBody;
+    private String dpLink;
     private String userId;
 }

@@ -24,7 +24,8 @@ public class TemplateProcessor {
         placeholders.put("{{portfolio}}", safe(jobProfile.getPortfolio()));
         placeholders.put("{{subject}}", safe(jobProfile.getSubject()));
         placeholders.put("{{description}}", safe(jobProfile.getDescription()));
-        placeholders.put("resume-path", safe(jobProfile.getResumePath()));
+        placeholders.put("{{resume-path}}", safe(jobProfile.getResumePath()));
+        placeholders.put("{{dp-link}}", safe(jobProfile.getDpLink()));
 
 
         for (Map.Entry<String, String> entry : placeholders.entrySet()) {
